@@ -1,6 +1,6 @@
 database
 	language(string)
-database - mydatabase
+database - db
 	knows(string,string)
 predicates
 	nondeterm menu()
@@ -18,7 +18,7 @@ clauses
 	add_lang(Name):-language(X), write("Этот человек знает ", X, " язык? "),
 			  readln(Answer), Answer="да",
 			  retractall(knows(Name,X)),
-			  assert(knows(Name,X),mydatabase).
+			  assert(knows(Name,X), db), nl.
 	
 	repeat.
 	repeat:-repeat.
@@ -27,18 +27,18 @@ clauses
 
 	show_all():- knows(Name, Language), write(Name," ",Language), nl, nl.
 
-	call(1):- consult(".\baza.dba", mydatabase), write("БД загружена"), nl, nl.
-	call(2):- write("Введите имя: "), readln(Name),
+	call(1):- consult(".\baza.dba", db), write("БД загружена"), nl, nl.
+	call(2):- write("Введите имя: "), readln(Name), nl,
 		  add_lang(Name).
-	call(3):- nl, nl, write("Please, enter name you want to delete: "), readln(Name),
+	call(3):- write("Введите имя человека информацию о котором хотите удалить: "), readln(Name),
 		  retractall(knows(Name,_)), nl,
-		  write("All information about ",Name," was deleted!").
-	call(4):- save(".\baza.dba", mydatabase), write("Database saved!").
+		  write("Записи удалены"), nl, nl.
+	call(4):- save(".\baza.dba", db), write("БД сохранена!"), nl, nl.
 	call(5):- show_all().
 
 	menu():-repeat,
 		write("Сделайте выбор"),
-		nl, write("1. Загрузить БД"), % работает но надо изменить положение файла
+		nl, write("1. Загрузить БД"), 
 		nl, write("2. Заполнить БД"),
 		nl, write("3. Удалить строку из БД"),
 		nl, write("4. Сохранить БД"), 
@@ -48,7 +48,7 @@ clauses
 		readint(X), nl,
 		X<6,
 		call(X), 
-		%readln(_),
+		%nl,
 		stop_menu(X).
 goal
 	menu. 

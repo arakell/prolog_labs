@@ -18,7 +18,7 @@ clauses
 	add_lang(Name):-language(X), write("Этот человек знает ", X, " язык? "),
 			  readln(Answer), Answer="да",
 			  retractall(knows(Name,X)),
-			  assert(knows(Name,X), db), nl.
+			  assert(knows(Name,X), db).
 	
 	repeat.
 	repeat:-repeat.
@@ -28,7 +28,7 @@ clauses
 	show_all():- knows(Name, Language), write(Name," ",Language), nl, nl.
 
 	call(1):- consult(".\baza.dba", db), write("БД загружена"), nl, nl.
-	call(2):- write("Введите имя: "), readln(Name), nl,
+	call(2):- write("Введите имя: "), readln(Name),
 		  add_lang(Name).
 	call(3):- write("Введите имя человека информацию о котором хотите удалить: "), readln(Name),
 		  retractall(knows(Name,_)), nl,
@@ -38,7 +38,7 @@ clauses
 
 	menu():-repeat,
 		write("Сделайте выбор"),
-		nl, write("1. Загрузить БД"), % работает но надо изменить положение файла
+		nl, write("1. Загрузить БД"), 
 		nl, write("2. Заполнить БД"),
 		nl, write("3. Удалить строку из БД"),
 		nl, write("4. Сохранить БД"), 
@@ -47,8 +47,7 @@ clauses
 		nl, write("Ваш выбор: "),
 		readint(X), nl,
 		X<6,
-		call(X), 
-		%nl,
+		call(X),
 		stop_menu(X).
 goal
 	menu. 
