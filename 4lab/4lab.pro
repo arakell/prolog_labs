@@ -60,9 +60,11 @@ goal
 	%delete_after([2, 2, 2, 2, 2], 2, Result).
 	%delete_after([2, 2, 2, 2, 2, 2, 2, 2, 2], 2, Result).
 	
-	%delete_before([2, 1, 2], 2, Result).
-	delete_before([1, 2, 3, 4, 2], 2, Result).
-	
+	delete_before([2, 1, 2], 2, Result).
+	%delete_before([1, 2, 3, 4, 2], 2, Result).
+	%delete_before([2, 2, 2, 2, 2], 2, Result).
+	%delete_before([2, 2, 2, 2, 2, 2, 2, 2, 2], 2, Result).
+	%delete_before([1, 1, 3, 2, 1, 2, 2, 3], 2, Result).
 	
 	
 	
