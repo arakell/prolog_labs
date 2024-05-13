@@ -12,7 +12,8 @@ predicates
 	nondeterm str_list(str, list)
 	nondeterm incr(i, i)
 	nondeterm conc(str, str, str)
-
+	nondeterm chk(file, file, i)
+	nondeterm results(i, i)
 clauses
 
 	count(0).
@@ -31,30 +32,30 @@ clauses
 		str_list(S1, T).
 
 	compare_lists([A|List1], [A|List2], NumberCh, Str) :- 
-			%write(A),
-			%nl,
+			write(A),
+			nl,
 			conc(Str, A, StrNew),
-			%write(StrNew),
+			write(StrNew),
 			compare_lists(List1, List2, NumberCh, StrNew).
 			
-	compare_lists([A], [A], -1, Str).
+	compare_lists([A], [A], -1, Str) :- !.
 	
 	compare_lists([A|List1], [B|List2], NumberCh, Str) :- 
 			A<>B, 
 			conc(A, Str, StrNew),
-			%write(StrNew),
+			write(StrNew),
 			str_len(Str, NumberCh),
-			%write(Str), 
+			write(Str), 
 			!.
   
-  
+  	chk(File1, File2, NumberCh) :- eof(File2); readdevice(File1), eof(File1) ; NumberCh <> -1.
   
 	compare_files(File1, File2, NumberStr, NumberCh) :-
 		openread(file1, File1), 
 		openread(file2, File2), 
 		%NumberCh = -1,
 		repeat,
-			nl,
+			%nl,
 			write("NumberStr "),
 			count(NumberStr),
 			write(NumberStr),
@@ -78,17 +79,17 @@ clauses
 			
 			compare_lists(List1, List2, NumberCh, ""),
 			
-		not(eof(File1)), not(eof(File2)),  NumberCh <> -1, !.
 		
-    		%compare_files(File1, File2, NumberStr, NumberCh).
+		chk(file1, file2, NumberCh), !,
 		
-		%closefile(file1),
-		%closefile(file2).
+		closefile(file1),
+		closefile(file2).
     
-
+	results(NumberStr, -1) :- write("Файлы совпадают"), nl, !.
+	results(NumberStr, NumberCh) :- write("Файлы отличаются, первое отличие в строке "), write(NumberStr), write(" символ "), write(NumberCh), nl, !.
 
 goal
-	compare_files("D:\\Study\\6sem\\II\\labs\\6lab\\file1.txt", "D:\\Study\\6sem\\II\\labs\\6lab\\file2.txt", NumberStr, NumberCh).
+	compare_files("D:\\Study\\6sem\\II\\labs\\6lab\\file1.txt", "D:\\Study\\6sem\\II\\labs\\6lab\\file2.txt", NumberStr, NumberCh), !, results(NumberStr, NumberCh).
 	
 	
 	
